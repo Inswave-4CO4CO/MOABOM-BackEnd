@@ -39,13 +39,6 @@ nbdist/
 *.log
 *.lombok.log
 
-# === 민감한 설정 파일 (절대 커밋 금지) ===
-application.properties
-application.yml
-application-*.yml
-application-*.properties
-.env
-
 # === OS 자동 생성 파일 ===
 .DS_Store
 Thumbs.db
