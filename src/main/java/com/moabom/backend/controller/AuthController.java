@@ -3,13 +3,16 @@ package com.moabom.backend.controller;
 import com.moabom.backend.constants.SecurityConstants;
 import com.moabom.backend.model.LoginRequest;
 import com.moabom.backend.model.SignupRequest;
+import com.moabom.backend.model.User;
 import com.moabom.backend.repository.UserRepository;
 import com.moabom.backend.service.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,9 +42,22 @@ public class AuthController {
 
     // 사용자 인증
     @GetMapping("/check")
-    public ResponseEntity<Map<String, String>> check(@RequestParam String token) {
+    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
 
-        return null;
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User user = userRepository.findByUserId(userDetails.getUsername()).orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보 없음");
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("userId", user.getUserId());
+        response.put("nickName", user.getNickName());
+        response.put("userImage", user.getUserImage());
+        return ResponseEntity.ok(response);
     }
 
     // 아이디 중복 확인
