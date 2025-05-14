@@ -34,13 +34,34 @@ public class AuthController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
-        String token = authService.login(request);
+        Map<String, String> tokens = authService.login(request);
+        System.out.println(tokens);
+        return ResponseEntity.ok(tokens);
+    }
+
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        authService.logout(userDetails.getUsername());
+        return ResponseEntity.ok("로그아웃 성공");
+    }
+
+    // access token 재발급
+    @PostMapping("/reissue")
+    public ResponseEntity<Map<String, String>> reissue(@RequestBody Map<String, String> body) {
+        String refreshToken = body.get("refreshToken");
+        String newAccessToken = authService.reissueAccessToken(refreshToken);
         Map<String, String> response = new HashMap<>();
-        response.put(SecurityConstants.TOKEN_TYPE, SecurityConstants.TOKEN_PREFIX + token);
+        response.put("accessToken", newAccessToken);
         return ResponseEntity.ok(response);
     }
 
-    // 사용자 인증
+    // 사용자 인증 (로그인한 유저인지)
     @GetMapping("/check")
     public ResponseEntity<?> getCurrentUser(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {

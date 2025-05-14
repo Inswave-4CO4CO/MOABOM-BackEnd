@@ -1,5 +1,6 @@
 package com.moabom.backend.util;
 
+import com.moabom.backend.constants.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -24,14 +25,34 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    // 토큰 생성
-    public String generateToken(UserDetails userDetails) {
+    // access token
+    public String generateAccessToken(UserDetails userDetails) {
+        return buildToken(userDetails.getUsername(), SecurityConstants.ACCESS_TOKEN_EXPIRE);
+    }
+
+    // refresh token
+    public String generateRefreshToken(String userId) {
+        return buildToken(userId, SecurityConstants.REFRESH_TOKEN_EXPIRE);
+    }
+
+    // token 생성
+    private String buildToken(String subject, long expiration) {
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
+                .setSubject(subject)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10시간
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    // refresh token 검증
+    public boolean validateRefreshToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     // 토큰 검증
@@ -46,7 +67,6 @@ public class JwtUtil {
 
     // 토큰에서 ID 추출
     public String extractUserId(String token) {
-
         return Jwts.parser().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
     }
 
