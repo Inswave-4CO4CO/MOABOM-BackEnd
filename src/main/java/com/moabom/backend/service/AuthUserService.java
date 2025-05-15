@@ -4,7 +4,7 @@ import com.moabom.backend.constants.SecurityConstants;
 import com.moabom.backend.model.LoginRequest;
 import com.moabom.backend.model.SignupRequest;
 
-import com.moabom.backend.model.User;
+import com.moabom.backend.model.UserEntity;
 import com.moabom.backend.repository.UserRepository;
 import com.moabom.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class AuthUserService {
             throw new RuntimeException("이미 존재하는 아이디입니다.");
         }
 
-        User user = User.builder()
+        UserEntity user = UserEntity.builder()
                 .userId(request.getUserId())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .nickName(request.getNickName())
@@ -44,8 +44,8 @@ public class AuthUserService {
     // 로그인 (토큰 발급)
     public Map<String, String> login(LoginRequest request) {
 
-        Optional<User> userOptional = userRepository.findByUserId((request.getUserId()));
-        User user = userOptional.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        Optional<UserEntity> userOptional = userRepository.findByUserId((request.getUserId()));
+        UserEntity user = userOptional.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");

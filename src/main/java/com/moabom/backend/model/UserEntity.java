@@ -14,14 +14,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name="User")
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
     @Id
     private String userId;
 

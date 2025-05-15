@@ -1,6 +1,6 @@
 package com.moabom.backend.service;
 
-import com.moabom.backend.model.User;
+import com.moabom.backend.model.UserEntity;
 import com.moabom.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -29,7 +29,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         String picture = (String) attributes.get("picture");
 
         // DB에 유저가 있으면 업데이트, 없으면 새로 저장
-        User user = userRepository.findByUserId(email)
+        UserEntity user = userRepository.findByUserId(email)
                 .map(entity -> {
                     entity.setNickName(name);
                     entity.setUserImage(picture);
@@ -37,7 +37,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
                     entity.setRole("ROLE_USER");
                     return entity;
                 })
-                .orElse(User.builder()
+                .orElse(UserEntity.builder()
                         .userId(email)
                         .password("") // 소셜로그인 사용자는 패스워드 비워둠
                         .nickName(name)

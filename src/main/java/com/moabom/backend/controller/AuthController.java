@@ -1,9 +1,8 @@
 package com.moabom.backend.controller;
 
-import com.moabom.backend.constants.SecurityConstants;
 import com.moabom.backend.model.LoginRequest;
 import com.moabom.backend.model.SignupRequest;
-import com.moabom.backend.model.User;
+import com.moabom.backend.model.UserEntity;
 import com.moabom.backend.repository.UserRepository;
 import com.moabom.backend.service.AuthUserService;
 import lombok.RequiredArgsConstructor;
@@ -69,7 +68,7 @@ public class AuthController {
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userRepository.findByUserId(userDetails.getUsername()).orElse(null);
+        UserEntity user = userRepository.findByUserId(userDetails.getUsername()).orElse(null);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보 없음");
         }
