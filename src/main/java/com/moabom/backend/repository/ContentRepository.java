@@ -1,0 +1,7 @@
+package com.moabom.backend.repository;
+
+import com.moabom.backend.model.ContentEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ContentRepository extends JpaRepository<ContentEntity, Integer> {
+}
