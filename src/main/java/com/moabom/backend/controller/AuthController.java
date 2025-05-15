@@ -5,7 +5,7 @@ import com.moabom.backend.model.LoginRequest;
 import com.moabom.backend.model.SignupRequest;
 import com.moabom.backend.model.User;
 import com.moabom.backend.repository.UserRepository;
-import com.moabom.backend.service.AuthService;
+import com.moabom.backend.service.AuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    private final AuthUserService authService;
     private final UserRepository userRepository;
 
     // 회원가입

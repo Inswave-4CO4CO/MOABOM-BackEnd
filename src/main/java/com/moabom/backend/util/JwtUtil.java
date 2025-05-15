@@ -26,8 +26,8 @@ public class JwtUtil {
     }
 
     // access token
-    public String generateAccessToken(UserDetails userDetails) {
-        return buildToken(userDetails.getUsername(), SecurityConstants.ACCESS_TOKEN_EXPIRE);
+    public String generateAccessToken(String userId) {
+        return buildToken(userId, SecurityConstants.ACCESS_TOKEN_EXPIRE);
     }
 
     // refresh token

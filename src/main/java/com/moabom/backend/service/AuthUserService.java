@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthUserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -51,7 +51,7 @@ public class AuthService {
             throw new RuntimeException("비밀번호가 일치하지 않습니다.");
         }
 
-        String accessToken = jwtUtil.generateAccessToken(user);
+        String accessToken = jwtUtil.generateAccessToken(user.getUserId());
         String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
         refreshTokenService.save(user.getUserId(), refreshToken, SecurityConstants.REFRESH_TOKEN_EXPIRE);
 
@@ -79,7 +79,7 @@ public class AuthService {
         // 새 Access Token 발급
         return jwtUtil.generateAccessToken(
                 userRepository.findByUserId(userId)
-                        .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."))
+                        .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다.")).getUserId()
         );
     }
 }
