@@ -1,17 +1,15 @@
-package com.moabom.backend.controller;
+package com.moabom.backend.controller.auth;
 
-import com.moabom.backend.model.LoginRequest;
-import com.moabom.backend.model.SignupRequest;
-import com.moabom.backend.model.UserEntity;
-import com.moabom.backend.repository.UserRepository;
-import com.moabom.backend.service.AuthUserService;
+import com.moabom.backend.model.auth.LoginRequest;
+import com.moabom.backend.model.auth.SignupRequest;
+import com.moabom.backend.model.auth.UserEntity;
+import com.moabom.backend.repository.auth.UserRepository;
+import com.moabom.backend.service.auth.AuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;

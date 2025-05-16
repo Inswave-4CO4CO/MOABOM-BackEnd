@@ -1,11 +1,11 @@
-package com.moabom.backend.service;
+package com.moabom.backend.service.auth;
 
 import com.moabom.backend.constants.SecurityConstants;
-import com.moabom.backend.model.LoginRequest;
-import com.moabom.backend.model.SignupRequest;
+import com.moabom.backend.model.auth.LoginRequest;
+import com.moabom.backend.model.auth.SignupRequest;
 
-import com.moabom.backend.model.UserEntity;
-import com.moabom.backend.repository.UserRepository;
+import com.moabom.backend.model.auth.UserEntity;
+import com.moabom.backend.repository.auth.UserRepository;
 import com.moabom.backend.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

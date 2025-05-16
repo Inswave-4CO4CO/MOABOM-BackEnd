@@ -1,7 +1,7 @@
-package com.moabom.backend.service;
+package com.moabom.backend.service.auth;
 
-import com.moabom.backend.model.UserEntity;
-import com.moabom.backend.repository.UserRepository;
+import com.moabom.backend.model.auth.UserEntity;
+import com.moabom.backend.repository.auth.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

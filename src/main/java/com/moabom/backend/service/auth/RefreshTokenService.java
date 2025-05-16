@@ -1,4 +1,4 @@
-package com.moabom.backend.service;
+package com.moabom.backend.service.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

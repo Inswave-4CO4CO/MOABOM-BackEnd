@@ -1,6 +1,5 @@
-package com.moabom.backend.service;
+package com.moabom.backend.service.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.moabom.backend.constants.SecurityConstants;
 import com.moabom.backend.util.JwtUtil;
 import jakarta.servlet.ServletException;
@@ -13,8 +12,6 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
