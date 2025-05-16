@@ -1,4 +1,4 @@
-package com.moabom.backend.constants;
+package com.moabom.backend.auth.constants;
 
 public final class SecurityConstants {
     //헤더 이름

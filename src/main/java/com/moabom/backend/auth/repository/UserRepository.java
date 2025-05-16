@@ -1,6 +1,6 @@
-package com.moabom.backend.repository.auth;
+package com.moabom.backend.auth.repository;
 
-import com.moabom.backend.model.auth.UserEntity;
+import com.moabom.backend.auth.model.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

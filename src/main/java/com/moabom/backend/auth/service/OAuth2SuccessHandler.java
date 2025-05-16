@@ -1,7 +1,7 @@
-package com.moabom.backend.service.auth;
+package com.moabom.backend.auth.service;
 
-import com.moabom.backend.constants.SecurityConstants;
-import com.moabom.backend.util.JwtUtil;
+import com.moabom.backend.auth.constants.SecurityConstants;
+import com.moabom.backend.auth.util.JwtUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

@@ -1,6 +1,6 @@
-package com.moabom.backend.util;
+package com.moabom.backend.auth.util;
 
-import com.moabom.backend.constants.SecurityConstants;
+import com.moabom.backend.auth.constants.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;

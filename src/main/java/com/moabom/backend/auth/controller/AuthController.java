@@ -1,12 +1,12 @@
-package com.moabom.backend.controller.auth;
+package com.moabom.backend.auth.controller;
 
-import com.moabom.backend.model.auth.LoginRequest;
-import com.moabom.backend.model.auth.SignupRequest;
-import com.moabom.backend.model.auth.UserEntity;
-import com.moabom.backend.repository.auth.UserRepository;
+import com.moabom.backend.auth.model.LoginRequest;
+import com.moabom.backend.auth.model.SignupRequest;
+import com.moabom.backend.auth.model.UserEntity;
+import com.moabom.backend.auth.repository.UserRepository;
 
 
-import com.moabom.backend.service.auth.AuthUserService;
+import com.moabom.backend.auth.service.AuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,11 +1,11 @@
 package com.moabom.backend.config;
 
-import com.moabom.backend.filter.JwtAuthenticationFilter;
+import com.moabom.backend.auth.filter.JwtAuthenticationFilter;
 
-import com.moabom.backend.service.auth.OAuth2SuccessHandler;
-import com.moabom.backend.service.auth.OAuth2UserService;
-import com.moabom.backend.service.auth.UserDetailsServiceImpl;
-import com.moabom.backend.util.JwtUtil;
+import com.moabom.backend.auth.service.OAuth2SuccessHandler;
+import com.moabom.backend.auth.service.OAuth2UserService;
+import com.moabom.backend.auth.service.UserDetailsServiceImpl;
+import com.moabom.backend.auth.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

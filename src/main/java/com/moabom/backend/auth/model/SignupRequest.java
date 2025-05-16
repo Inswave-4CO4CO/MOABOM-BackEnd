@@ -1,4 +1,4 @@
-package com.moabom.backend.model.auth;
+package com.moabom.backend.auth.model;
 
 import lombok.Data;
 
