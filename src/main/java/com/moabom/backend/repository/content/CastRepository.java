@@ -1,6 +1,6 @@
-package com.moabom.backend.repository;
+package com.moabom.backend.repository.content;
 
-import com.moabom.backend.model.OttDTO;
+import com.moabom.backend.model.content.CastDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -8,14 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class OttRepository {
-
+public class CastRepository {
     @PersistenceContext
     private EntityManager em;
 
-    public List<OttDTO> getOttInfoByContentId(int contentId) {
+    public List<CastDTO> getCastInfoByContentId(int contentId) {
         return em.createNativeQuery(
-                        "CALL get_ott_info_by_content_id(:contentId)", "OttEntityMapping")
+                        "CALL get_cast_info_by_content_id(:contentId)", "CastDTOMapping")
                 .setParameter("contentId", contentId)
                 .getResultList();
     }

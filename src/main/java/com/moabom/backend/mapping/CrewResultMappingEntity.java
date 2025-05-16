@@ -1,12 +1,12 @@
 package com.moabom.backend.mapping;
 
-import com.moabom.backend.model.content.CastDTO;
+import com.moabom.backend.model.content.CrewDTO;
 import jakarta.persistence.*;
 
 @SqlResultSetMapping(
-        name = "CastDTOMapping",
+        name = "CrewDTOMapping",
         classes = @ConstructorResult(
-                targetClass = CastDTO.class,
+                targetClass = CrewDTO.class,
                 columns = {
                         @ColumnResult(name = "PERSON_ID", type = Integer.class),
                         @ColumnResult(name = "PERSON_NAME", type = String.class),
@@ -15,8 +15,9 @@ import jakarta.persistence.*;
                 }
         )
 )
+
 @Entity
-public class CastResultMappingEntity {
+public class CrewResultMappingEntity {
     @Id
     private Long id;
 }

@@ -1,4 +1,4 @@
-package com.moabom.backend.model;
+package com.moabom.backend.model.content;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.moabom.backend.model;
+package com.moabom.backend.model.review;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

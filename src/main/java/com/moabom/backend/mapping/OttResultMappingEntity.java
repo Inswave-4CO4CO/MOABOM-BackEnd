@@ -1,6 +1,6 @@
 package com.moabom.backend.mapping;
 
-import com.moabom.backend.model.OttDTO;
+import com.moabom.backend.model.content.OttDTO;
 import jakarta.persistence.*;
 
 @SqlResultSetMapping(
