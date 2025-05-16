@@ -8,8 +8,10 @@ import com.moabom.backend.service.AuthUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -33,9 +35,13 @@ public class AuthController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
-        Map<String, String> tokens = authService.login(request);
-        System.out.println(tokens);
-        return ResponseEntity.ok(tokens);
+        try {
+            Map<String, String> tokens = authService.login(request);
+            return ResponseEntity.ok(tokens);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "아이디 또는 비밀번호가 일치하지 않습니다."));
+        }
     }
 
     // 로그아웃
@@ -51,7 +57,7 @@ public class AuthController {
     }
 
     // access token 재발급
-    @PostMapping("/reissue")
+    @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> reissue(@RequestBody Map<String, String> body) {
         String refreshToken = body.get("refreshToken");
         String newAccessToken = authService.reissueAccessToken(refreshToken);

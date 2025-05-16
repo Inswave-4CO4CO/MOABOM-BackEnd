@@ -32,16 +32,14 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         String accessToken = jwtUtil.generateAccessToken(email);
         String refreshToken = jwtUtil.generateRefreshToken(email);
 
-        // refreshToken DB 저장 (선택)
+        // refreshToken DB 저장
         refreshTokenService.save(email, refreshToken, SecurityConstants.REFRESH_TOKEN_EXPIRE);
 
-        // 프론트엔드에 JSON으로 응답
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", accessToken);
-        tokens.put("refreshToken", refreshToken);
+        // 프론트엔드로 리다이렉트 (토큰 쿼리스트링 전달)
+        String redirectUrl = "http://localhost:5173/oauth2/redirect"
+                + "?accessToken=" + accessToken
+                + "&refreshToken=" + refreshToken;
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        new ObjectMapper().writeValue(response.getWriter(), tokens);
+        response.sendRedirect(redirectUrl);
     }
 }
