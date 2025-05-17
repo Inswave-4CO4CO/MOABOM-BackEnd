@@ -1,14 +1,14 @@
 package com.moabom.backend.model.review;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,13 +18,16 @@ import java.sql.Date;
 public class ReviewEntity {
     @Id
     @Column(name = "REVIEW_ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reviewId;
 
     @Column(name = "REVIEW_TEXT")
     private String reviewText;
 
     @Column(name = "CREATED_AT")
-    private Date createdAt;
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdAt;
 
     @Column(name = "RATING")
     private float rating;

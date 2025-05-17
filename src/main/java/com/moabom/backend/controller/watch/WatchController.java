@@ -2,7 +2,6 @@ package com.moabom.backend.controller.watch;
 
 import com.moabom.backend.model.watch.WatchEntity;
 import com.moabom.backend.model.watch.WatchId;
-import com.moabom.backend.service.review.ReviewService;
 import com.moabom.backend.service.watch.WatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

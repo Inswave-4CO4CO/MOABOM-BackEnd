@@ -15,4 +15,6 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity, Integer> {
     List<ReviewEntity> findByContentId(int contentId);
 
     Page<ReviewEntity> getReviewByContentId(int contentId, Pageable pageable);
+
+    ReviewEntity findByContentIdAndUserId(int contentId, String userId);
 }
