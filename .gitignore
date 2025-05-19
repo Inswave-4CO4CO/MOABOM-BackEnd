@@ -45,6 +45,7 @@ Thumbs.db
 
 # === Spring Boot 설정 파일 ===
 src/main/resources/application.properties
-
+application.*
+*.properties
 # === 기타 ===
 HELP.md
