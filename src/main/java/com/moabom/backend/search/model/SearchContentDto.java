@@ -1,4 +1,5 @@
-package com.moabom.backend.domain.search.model;
+// SearchContentDto.java
+package com.moabom.backend.search.model;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ContentDto {
+public class SearchContentDto {
     private Long contentId;
     private String title;
     private String description;

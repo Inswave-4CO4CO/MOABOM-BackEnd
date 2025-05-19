@@ -1,4 +1,4 @@
-package com.moabom.backend.domain.search.model;
+package com.moabom.backend.search.model;
 
 import java.time.LocalDate;
 import java.util.List;

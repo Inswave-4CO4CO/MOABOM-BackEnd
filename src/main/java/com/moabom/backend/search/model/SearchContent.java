@@ -1,4 +1,5 @@
-package com.moabom.backend.domain.search.model;
+// SearchContent.java
+package com.moabom.backend.search.model;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -15,17 +16,17 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
-//Content.java
 @Entity
 @Table(name = "content")
 @Data
-@ToString(exclude = {"casts","crews","genres"})
-@EqualsAndHashCode(exclude = {"casts","crews","genres"})
-public class Content {
+@ToString(exclude = {"searchCasts", "searchCrews", "searchGenres", "searchOtts"})
+@EqualsAndHashCode(exclude = {"searchCasts", "searchCrews", "searchGenres", "searchOtts"})
+public class SearchContent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CONTENT_ID")
@@ -64,12 +65,11 @@ public class Content {
     @Column(name = "IMDB_RATING")
     private Float imdbRating;
 
-    // 연관관계
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
-    private Set<Cast> casts = new HashSet<>();
+    @OneToMany(mappedBy = "searchContent", cascade = CascadeType.ALL)
+    private Set<SearchCast> searchCasts = new HashSet<>();
 
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL)
-    private Set<Crew> crews = new HashSet<>();
+    @OneToMany(mappedBy = "searchContent", cascade = CascadeType.ALL)
+    private Set<SearchCrew> searchCrews = new HashSet<>();
     
     @ManyToMany
     @JoinTable(
@@ -77,7 +77,7 @@ public class Content {
       joinColumns = @JoinColumn(name = "CONTENT_ID"),
       inverseJoinColumns = @JoinColumn(name = "GENRE_ID")
     )
-    private Set<Genre> genres = new HashSet<>();
+    private Set<SearchGenre> searchGenres = new HashSet<>();
     
     @ManyToMany
     @JoinTable(
@@ -85,5 +85,5 @@ public class Content {
       joinColumns = @JoinColumn(name = "CONTENT_ID"),
       inverseJoinColumns = @JoinColumn(name = "OTT_ID")
     )
-    private Set<Ott> otts = new HashSet<>();
+    private Set<SearchOtt> searchOtts = new HashSet<>();
 }

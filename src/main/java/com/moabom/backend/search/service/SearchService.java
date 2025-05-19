@@ -1,4 +1,5 @@
-package com.moabom.backend.domain.search.service;
+// SearchService.java
+package com.moabom.backend.search.service;
 
 import java.util.List;
 
@@ -8,86 +9,86 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.moabom.backend.domain.search.model.Content;
-import com.moabom.backend.domain.search.model.ContentDto;
-import com.moabom.backend.domain.search.model.PersonDto;
-import com.moabom.backend.domain.search.repository.ContentRepository;
-import com.moabom.backend.domain.search.repository.GenreRepository;
-import com.moabom.backend.domain.search.repository.PersonInfoRepository;
-import com.moabom.backend.domain.search.spec.ContentSpec;
+import com.moabom.backend.search.model.SearchContent;
+import com.moabom.backend.search.model.SearchContentDto;
+import com.moabom.backend.search.model.SearchPersonDto;
+import com.moabom.backend.search.repository.SearchRepository;
+import com.moabom.backend.search.repository.SearchGenreRepository;
+import com.moabom.backend.search.repository.PersonInfoRepository;
+import com.moabom.backend.search.spec.ContentSpec;
 
 @Service
 public class SearchService {
-	
-	@Autowired
-	private ContentRepository contentRepository;
-	
-	@Autowired
-	private PersonInfoRepository personInfoRepository;
-	
-	@Autowired
-	private GenreRepository genreRepository;
-	
-	public Page<ContentDto> searchWithFilters(
-	        String keyword,
-	        List<String> genres,
-	        List<String> otts,
-	        List<String> categories,
-	        Pageable pageable
-	    ) {
-	        Specification<Content> spec = Specification
-	            .where(ContentSpec.titleContains(keyword));
+    
+    @Autowired
+    private SearchRepository searchRepository;
+    
+    @Autowired
+    private PersonInfoRepository personInfoRepository;
+    
+    @Autowired
+    private SearchGenreRepository searchGenreRepository;
+    
+    public Page<SearchContentDto> searchWithFilters(
+            String keyword,
+            List<String> genres,
+            List<String> otts,
+            List<String> categories,
+            Pageable pageable
+        ) {
+            Specification<SearchContent> spec = Specification
+                .where(ContentSpec.titleContains(keyword));
 
-	        if (genres != null && !genres.isEmpty()) {
-	            spec = spec.and(ContentSpec.genreIn(genres));
-	        }
-	        if (otts != null && !otts.isEmpty()) {
-	            spec = spec.and(ContentSpec.ottIn(otts));
-	        }
-	        if (categories != null && !categories.isEmpty()) {
-	            spec = spec.and(ContentSpec.categoryIn(categories));
-	        }
+            if (genres != null && !genres.isEmpty()) {
+                spec = spec.and(ContentSpec.genreIn(genres));
+            }
+            if (otts != null && !otts.isEmpty()) {
+                spec = spec.and(ContentSpec.ottIn(otts));
+            }
+            if (categories != null && !categories.isEmpty()) {
+                spec = spec.and(ContentSpec.categoryIn(categories));
+            }
 
-	        Page<Content> page = contentRepository.findAll(spec, pageable);
+            Page<SearchContent> page = searchRepository.findAll(spec, pageable);
 
-	        return page.map(c -> ContentDto.builder()
-	            .contentId   (c.getContentId())
-	            .title       (c.getTitle())
-	            .description (c.getDescription())
-	            .releaseDate (c.getReleaseDate())
-	            .category    (c.getCategory())
-	            .runningTime (c.getRunningTime())
-	            .image       (c.getImage())
-	            .rating      (c.getRating())
-	            .ageRating   (c.getAgeRating())
-	            .madeIn      (c.getMadeIn())
-	            .poster      (c.getPoster())
-	            .imdbRating  (c.getImdbRating())
-	            .genres      (c.getGenres().stream()
-	                             .map(g -> g.getGenreName())
-	                             .toList())
-	            .otts        (c.getOtts().stream()
-	                             .map(o -> o.getOttName())
-	                             .toList())
-	            .build()
-	        );
-	    }
-	
-	// 2) /search/cast → cast + person_info JOIN, personName LIKE 검색
-	public Page<PersonDto> searchCastByName(String keyword, Pageable pageable) {
+            return page.map(c -> SearchContentDto.builder()
+                .contentId   (c.getContentId())
+                .title       (c.getTitle())
+                .description (c.getDescription())
+                .releaseDate (c.getReleaseDate())
+                .category    (c.getCategory())
+                .runningTime (c.getRunningTime())
+                .image       (c.getImage())
+                .rating      (c.getRating())
+                .ageRating   (c.getAgeRating())
+                .madeIn      (c.getMadeIn())
+                .poster      (c.getPoster())
+                .imdbRating  (c.getImdbRating())
+                .genres      (c.getSearchGenres().stream()
+                                 .map(g -> g.getGenreName())
+                                 .toList())
+                .otts        (c.getSearchOtts().stream()
+                                 .map(o -> o.getOttName())
+                                 .toList())
+                .build()
+            );
+        }
+    
+    // 2) /search/cast → cast + person_info JOIN, personName LIKE 검색
+    public Page<SearchPersonDto> searchCastByName(String keyword, Pageable pageable) {
         return personInfoRepository
-            .findDistinctByCastsIsNotEmptyAndPersonNameContaining(keyword, pageable)
-            .map(p -> PersonDto.builder()
+            .findDistinctBySearchCastsIsNotEmptyAndPersonNameContaining(keyword, pageable)
+            .map(p -> SearchPersonDto.builder()
                 .personId  (p.getPersonId())
                 .personName(p.getPersonName())
                 .image     (p.getImage())
                 .build());
     }
 
-    public Page<PersonDto> searchCrewByName(String keyword, Pageable pageable) {
+    public Page<SearchPersonDto> searchCrewByName(String keyword, Pageable pageable) {
         return personInfoRepository
-            .findDistinctByCrewsIsNotEmptyAndPersonNameContaining(keyword, pageable)
-            .map(p -> PersonDto.builder()
+            .findDistinctBySearchCrewsIsNotEmptyAndPersonNameContaining(keyword, pageable)
+            .map(p -> SearchPersonDto.builder()
                 .personId  (p.getPersonId())
                 .personName(p.getPersonName())
                 .image     (p.getImage())
@@ -95,10 +96,10 @@ public class SearchService {
     }
     
     public List<String> getAllGenres() {
-    	return genreRepository.findAllGenreNames();
+        return searchGenreRepository.findAllGenreNames();
     }
     
     public List<String> getAllCategories() {
-    	return contentRepository.findDistinctCategories();
+        return searchRepository.findDistinctCategories();
     }
 }

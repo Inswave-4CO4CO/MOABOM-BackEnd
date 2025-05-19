@@ -1,4 +1,4 @@
-package com.moabom.backend.domain.search.model;
+package com.moabom.backend.search.model;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SearchResultDto {
-    private List<ContentDto> content;
-    private List<PersonDto>  person;
+    private List<SearchContentDto> content;
+    private List<SearchPersonDto>  person;
     private List<String> allGenres;
     private List<String> allCategories;
     private boolean hasNext;

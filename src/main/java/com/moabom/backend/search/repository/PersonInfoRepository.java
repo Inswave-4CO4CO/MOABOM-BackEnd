@@ -1,15 +1,14 @@
-package com.moabom.backend.domain.search.repository;
+package com.moabom.backend.search.repository;
 
+import com.moabom.backend.search.model.SearchPersonInfo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.moabom.backend.domain.search.model.PersonInfo;
+public interface PersonInfoRepository extends JpaRepository<SearchPersonInfo, Long> {
+    Page<SearchPersonInfo> findDistinctBySearchCastsIsNotEmptyAndPersonNameContaining(
+        String keyword, Pageable pageable);
 
-//PersonInfoRepository.java
-public interface PersonInfoRepository extends JpaRepository<PersonInfo, Long> {
-	Page<PersonInfo> findDistinctByCastsIsNotEmptyAndPersonNameContaining(
-	        String keyword, Pageable pageable);
-	    Page<PersonInfo> findDistinctByCrewsIsNotEmptyAndPersonNameContaining(
-	        String keyword, Pageable pageable);
+    Page<SearchPersonInfo> findDistinctBySearchCrewsIsNotEmptyAndPersonNameContaining(
+        String keyword, Pageable pageable);
 }

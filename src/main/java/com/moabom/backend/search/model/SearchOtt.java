@@ -1,4 +1,5 @@
-package com.moabom.backend.domain.search.model;
+// SearchOtt.java
+package com.moabom.backend.search.model;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,12 +11,17 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Entity
 @Table(name = "ott")
 @Data
-public class Ott {
+@ToString(exclude = "searchContents")
+@EqualsAndHashCode(exclude = "searchContents")
+public class SearchOtt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OTT_ID")
@@ -24,6 +30,6 @@ public class Ott {
     @Column(name = "OTT_NAME", unique = true, nullable = false, length = 20)
     private String ottName;
 
-    @ManyToMany(mappedBy = "otts")
-    private Set<Content> contents = new HashSet<>();
+    @ManyToMany(mappedBy = "searchOtts")
+    private Set<SearchContent> searchContents = new HashSet<>();
 }
