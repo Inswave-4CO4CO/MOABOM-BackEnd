@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 public class ContentService {
-    private final ContentRepository contentRepository;
+    private final DetailRepository detailRepository;
     private final OttRepository ottRepository;
     private final GenreRepository genreRepository;
     private final WatchRepository watchRepository;
@@ -25,13 +25,13 @@ public class ContentService {
 
     @Autowired
     public ContentService(
-            ContentRepository contentRepository,
+            DetailRepository detailRepository,
             OttRepository ottRepository,
             GenreRepository genreRepository,
             WatchRepository watchRepository,
             CastRepository castRepository,
             CrewRepository crewRepository) {
-        this.contentRepository = contentRepository;
+        this.detailRepository = detailRepository;
         this.ottRepository = ottRepository;
         this.genreRepository = genreRepository;
         this.watchRepository = watchRepository;
@@ -43,7 +43,7 @@ public class ContentService {
     public Map<String, Object> getContentById(int contentId, String userId) {
         Map<String, Object> contentDetailMap = new HashMap<>();
         //컨텐츠 세부정보
-        ContentEntity content = contentRepository.findById(contentId)
+        ContentEntity content = detailRepository.findById(contentId)
                 .orElseThrow(() -> new ContentNotFoundException("[작품 가져오기] contentId(" + contentId + ") 를 찾을 수 없습니다"));
         contentDetailMap.put("content", content);
 
