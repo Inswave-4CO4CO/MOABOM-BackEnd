@@ -1,9 +1,9 @@
-package com.moabom.backend.content.controller;
+package com.moabom.backend.main.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import com.moabom.backend.content.service.MainPageService;
+import com.moabom.backend.main.service.MainPageService;
 
 import java.util.*;
 

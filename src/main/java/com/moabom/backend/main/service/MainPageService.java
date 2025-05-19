@@ -1,10 +1,10 @@
-package com.moabom.backend.content.service;
+package com.moabom.backend.main.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import com.moabom.backend.content.model.*;
-import com.moabom.backend.content.repository.*;
+import com.moabom.backend.main.model.*;
+import com.moabom.backend.main.repository.*;
 
 import java.time.LocalDate;
 import java.util.*;

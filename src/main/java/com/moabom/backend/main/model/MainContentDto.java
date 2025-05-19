@@ -1,4 +1,4 @@
-package com.moabom.backend.content.model;
+package com.moabom.backend.main.model;
 
 import lombok.*;
 

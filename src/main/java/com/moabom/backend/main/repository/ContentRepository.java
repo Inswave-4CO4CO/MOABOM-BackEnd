@@ -1,8 +1,8 @@
-package com.moabom.backend.content.repository;
+package com.moabom.backend.main.repository;
 
 import org.springframework.data.jpa.repository.*;
 
-import com.moabom.backend.content.model.Content;
+import com.moabom.backend.main.model.Content;
 
 import java.time.LocalDate;
 import java.util.List;
