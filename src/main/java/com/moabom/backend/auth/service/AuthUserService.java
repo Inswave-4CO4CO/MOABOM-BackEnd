@@ -5,7 +5,7 @@ import com.moabom.backend.auth.model.LoginRequest;
 import com.moabom.backend.auth.model.SignupRequest;
 
 import com.moabom.backend.auth.model.UserEntity;
-import com.moabom.backend.auth.repository.UserRepository;
+import com.moabom.backend.auth.repository.AuthRepository;
 import com.moabom.backend.auth.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AuthUserService {
 
-    private final UserRepository userRepository;
+    private final AuthRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtil;

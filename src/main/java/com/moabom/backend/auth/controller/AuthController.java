@@ -3,7 +3,7 @@ package com.moabom.backend.auth.controller;
 import com.moabom.backend.auth.model.LoginRequest;
 import com.moabom.backend.auth.model.SignupRequest;
 import com.moabom.backend.auth.model.UserEntity;
-import com.moabom.backend.auth.repository.UserRepository;
+import com.moabom.backend.auth.repository.AuthRepository;
 
 
 import com.moabom.backend.auth.service.AuthUserService;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthUserService authService;
-    private final UserRepository userRepository;
+    private final AuthRepository userRepository;
 
     // 회원가입
     @PostMapping("/signup")

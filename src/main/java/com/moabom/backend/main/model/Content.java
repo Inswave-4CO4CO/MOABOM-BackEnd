@@ -2,6 +2,8 @@ package com.moabom.backend.main.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,22 +15,41 @@ import java.util.List;
 public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "CONTENT_ID")
     private Integer contentId;
 
+    @Column(name = "TITLE")
     private String title;
+
+    @Column(name = "DESCRIPTION")
     private String description;
-    private LocalDate releaseDate;
+
+    @Column(name = "RELEASE_DATE")
+    private Date releaseDate;
+
+    @Column(name = "CATEGORY")
     private String category;
+
+    @Column(name = "RUNNING_TIME")
     private String runningTime;
+
+    @Column(name = "IMAGE")
     private String image;
-    private Double rating;
-    private String ageRating;
 
-    @Column(name = "made_in")
-    private String madein;
+    @Column(name = "RATING")
+    private Float rating;
 
+    @Column(name = "AGE_RATING")
+    private Integer ageRating;
+
+    @Column(name = "MADE_IN")
+    private String madeIn;
+
+    @Column(name = "POSTER")
     private String poster;
-    private Double imdbRating;
+
+    @Column(name = "IMDB_RATING")
+    private Float imdbRating;
 
     @OneToMany(mappedBy = "content")
     private List<ContentOtt> contentOtts;

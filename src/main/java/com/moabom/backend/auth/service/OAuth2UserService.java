@@ -1,7 +1,7 @@
 package com.moabom.backend.auth.service;
 
 import com.moabom.backend.auth.model.UserEntity;
-import com.moabom.backend.auth.repository.UserRepository;
+import com.moabom.backend.auth.repository.AuthRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -15,7 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuth2UserService extends DefaultOAuth2UserService {
 
-    private final UserRepository userRepository;
+    private final AuthRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {

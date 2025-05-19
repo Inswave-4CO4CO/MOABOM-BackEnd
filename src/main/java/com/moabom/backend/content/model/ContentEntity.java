@@ -14,7 +14,7 @@ import java.sql.Date;
 public class ContentEntity {
     @Id
     @Column(name = "CONTENT_ID")
-    private int contentId;
+    private Integer contentId;
 
     @Column(name = "TITLE")
     private String title;
@@ -35,10 +35,10 @@ public class ContentEntity {
     private String image;
 
     @Column(name = "RATING")
-    private float rating;
+    private Float rating;
 
     @Column(name = "AGE_RATING")
-    private int ageRating;
+    private Integer ageRating;
 
     @Column(name = "MADE_IN")
     private String madeIn;
@@ -47,5 +47,5 @@ public class ContentEntity {
     private String poster;
 
     @Column(name = "IMDB_RATING")
-    private float imdbRating;
+    private Float imdbRating;
 }
