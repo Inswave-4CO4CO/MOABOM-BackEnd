@@ -2,7 +2,6 @@ package com.moabom.backend.auth.controller;
 
 import com.moabom.backend.auth.model.LoginRequest;
 import com.moabom.backend.auth.model.SignupRequest;
-import com.moabom.backend.auth.model.UserEntity;
 import com.moabom.backend.auth.repository.AuthRepository;
 
 
@@ -76,26 +75,6 @@ public class AuthController {
         String newAccessToken = authService.reissueAccessToken(refreshToken);
         Map<String, String> response = new HashMap<>();
         response.put("token", newAccessToken);
-        return ResponseEntity.ok(response);
-    }
-
-    // 사용자 인증 (로그인한 유저인지)
-    @GetMapping("/check")
-    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        UserEntity user = userRepository.findByUserId(userDetails.getUsername()).orElse(null);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보 없음");
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("userId", user.getUserId());
-        response.put("nickName", user.getNickName());
-        response.put("userImage", user.getUserImage());
         return ResponseEntity.ok(response);
     }
 
