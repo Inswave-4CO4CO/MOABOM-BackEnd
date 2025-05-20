@@ -7,9 +7,7 @@ import com.moabom.backend.user.service.MyPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -25,7 +23,7 @@ public class MyPageController {
 
     //보는중 리스트(5개씩)
     @GetMapping("/watching")
-    public PagedResultDTO<MyWatchDTO> getWatchingList(@RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth, @RequestBody MyOttDTO ottList){
+    public MyPagedResultDTO<MyWatchDTO> getWatchingList(@RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth, @RequestBody MyOttDTO ottList){
         String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
         String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
 
@@ -34,7 +32,7 @@ public class MyPageController {
 
     //봤다 리스트(5개씩)
     @GetMapping("/watched")
-    public PagedResultDTO<MyWatchDTO> getWatchedList(@RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth, @RequestBody MyOttDTO ottList){
+    public MyPagedResultDTO<MyWatchDTO> getWatchedList(@RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth, @RequestBody MyOttDTO ottList){
         String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
         String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
 
@@ -52,7 +50,7 @@ public class MyPageController {
 
     //나의 댓글 조회(5개씩)
     @GetMapping("/comments")
-    public PagedResultDTO<MyReviewDTO> getReviewList(@RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth, @RequestParam(value = "page", defaultValue = "0") int page ){
+    public MyPagedResultDTO<MyReviewDTO> getReviewList(@RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth, @RequestParam(value = "page", defaultValue = "0") int page ){
         String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
         String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
 

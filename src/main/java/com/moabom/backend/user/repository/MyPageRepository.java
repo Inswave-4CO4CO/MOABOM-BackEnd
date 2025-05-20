@@ -3,7 +3,7 @@ package com.moabom.backend.user.repository;
 import com.moabom.backend.user.model.MyReviewDTO;
 import com.moabom.backend.user.model.MyStatsDTO;
 import com.moabom.backend.user.model.MyWatchDTO;
-import com.moabom.backend.user.model.PagedResultDTO;
+import com.moabom.backend.user.model.MyPagedResultDTO;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ public class MyPageRepository {
     private EntityManager em;
 
     //ott 리스트 가져오기
-    public PagedResultDTO<MyWatchDTO> getContentByUserAndOttList(
+    public MyPagedResultDTO<MyWatchDTO> getContentByUserAndOttList(
             String userId,
             String ottList,
             String type,
@@ -42,7 +42,7 @@ public class MyPageRepository {
         } catch (NoResultException | NonUniqueResultException e) { /* ignore or log */ } catch (Exception e) { throw new RuntimeException("카운트 오류", e); }
 
         if (totalCount <= 0) {
-            PagedResultDTO<MyWatchDTO> emptyResult = new PagedResultDTO<>();
+            MyPagedResultDTO<MyWatchDTO> emptyResult = new MyPagedResultDTO<>();
             emptyResult.setContent(Collections.emptyList());
             emptyResult.setTotalCount(0);
             emptyResult.setTotalPages(0);
@@ -58,7 +58,7 @@ public class MyPageRepository {
                 .setParameter("limit", limit)
                 .getResultList();
 
-        PagedResultDTO<MyWatchDTO> result = new PagedResultDTO<>();
+        MyPagedResultDTO<MyWatchDTO> result = new MyPagedResultDTO<>();
         result.setContent(content);
         result.setTotalCount(totalCount);
         result.setCurrentPage(page);
@@ -79,7 +79,7 @@ public class MyPageRepository {
 
 
     //리뷰 가져오기
-    public PagedResultDTO<MyReviewDTO> getReviewByUserId(
+    public MyPagedResultDTO<MyReviewDTO> getReviewByUserId(
             String userId,
             int page,
             int size
@@ -101,7 +101,7 @@ public class MyPageRepository {
         } catch (NoResultException | NonUniqueResultException e) { /* ignore or log */ } catch (Exception e) { throw new RuntimeException("카운트 오류", e); }
 
         if (totalCount <= 0) {
-            PagedResultDTO<MyReviewDTO> emptyResult = new PagedResultDTO<>();
+            MyPagedResultDTO<MyReviewDTO> emptyResult = new MyPagedResultDTO<>();
             emptyResult.setContent(Collections.emptyList());
             emptyResult.setTotalCount(0);
             emptyResult.setTotalPages(0);
@@ -115,7 +115,7 @@ public class MyPageRepository {
                 .setParameter("limit", limit)
                 .getResultList();
 
-        PagedResultDTO<MyReviewDTO> result = new PagedResultDTO<>();
+        MyPagedResultDTO<MyReviewDTO> result = new MyPagedResultDTO<>();
         result.setContent(content);
         result.setTotalCount(totalCount);
         result.setCurrentPage(page);
