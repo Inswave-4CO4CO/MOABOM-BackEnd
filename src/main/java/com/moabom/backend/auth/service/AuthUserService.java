@@ -7,6 +7,8 @@ import com.moabom.backend.auth.model.SignupRequest;
 import com.moabom.backend.auth.model.UserEntity;
 import com.moabom.backend.auth.repository.AuthRepository;
 import com.moabom.backend.auth.util.JwtUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,7 +44,7 @@ public class AuthUserService {
     }
 
     // 로그인 (토큰 발급)
-    public Map<String, String> login(LoginRequest request) {
+    public Map<String, String> login(LoginRequest request, HttpServletResponse response) {
 
         Optional<UserEntity> userOptional = userRepository.findByUserId((request.getUserId()));
         UserEntity user = userOptional.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
@@ -55,15 +57,30 @@ public class AuthUserService {
         String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
         refreshTokenService.save(user.getUserId(), refreshToken, SecurityConstants.REFRESH_TOKEN_EXPIRE);
 
+        Cookie cookie = new Cookie("refreshToken", refreshToken);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false); // HTTPS 환경에서만.. (일단 false)
+        cookie.setPath("/");
+        cookie.setMaxAge((int) SecurityConstants.REFRESH_TOKEN_EXPIRE);
+
+        response.addCookie(cookie);
+
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
-        tokens.put("refreshToken", refreshToken);
         return tokens;
     }
 
     // 로그아웃 (Refresh Token 삭제)
-    public void logout(String userId) {
+    public void logout(String userId, HttpServletResponse response) {
         refreshTokenService.delete(userId);
+
+        // 쿠키 만료
+        Cookie cookie = new Cookie("refreshToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // 즉시 만료
+        response.addCookie(cookie);
     }
 
     // Access Token 재발급

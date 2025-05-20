@@ -14,8 +14,8 @@ public class RefreshTokenService {
     private final StringRedisTemplate redisTemplate;
 
     // Refresh Token 저장 (userId를 key로, refreshToken을 value로)
-    public void save(String userId, String refreshToken, long expireMillis) {
-        redisTemplate.opsForValue().set(userId, refreshToken, Duration.ofMillis(expireMillis));
+    public void save(String userId, String refreshToken, long expireSeconds) {
+        redisTemplate.opsForValue().set(userId, refreshToken, Duration.ofSeconds(expireSeconds));
     }
 
     // Refresh Token 조회
