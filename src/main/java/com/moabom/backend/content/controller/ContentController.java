@@ -1,5 +1,6 @@
 package com.moabom.backend.content.controller;
 
+import com.moabom.backend.auth.util.JwtUtil;
 import com.moabom.backend.review.model.ReviewEntity;
 import com.moabom.backend.content.service.ContentService;
 import com.moabom.backend.review.service.ReviewService;
@@ -15,16 +16,24 @@ import java.util.Map;
 public class ContentController {
     private final ContentService contentService;
     private final ReviewService reviewService;
+    private final JwtUtil jwtUtil;
 
     @Autowired
-    public ContentController(ContentService contentService, ReviewService reviewService) {
+    public ContentController(ContentService contentService, ReviewService reviewService, JwtUtil jwtUtil) {
         this.contentService = contentService;
         this.reviewService = reviewService;
+        this.jwtUtil = jwtUtil;
     }
 
-    //작품 상세정보(장르, 배우, 제작진, 줄거리, 시청상태(type) 등...)
     @GetMapping("/{contentId}")
-    public Map<String, Object> getContentById(@PathVariable("contentId") int contentId, @RequestParam("userId") String userId) {
+    public Map<String, Object> getContentById(
+            @PathVariable("contentId") int contentId,
+            @RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth) {
+
+        String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
+
+        String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
+
         Map<String, Object> contentDetailMap = new HashMap<>();
         contentDetailMap = contentService.getContentById(contentId, userId);
         return contentDetailMap;
@@ -32,10 +41,10 @@ public class ContentController {
 
     //한줄평 컨텐츠 별로 가져오기(8개씩)
     @GetMapping("/{contentId}/review")
-    public List<ReviewEntity> getReviewsByContentId(
+    public Map<String, Object> getReviewsByContentId(
             @PathVariable("contentId") int contentId,
             @RequestParam(value = "page", defaultValue = "0") int page
     ) {
-        return reviewService.getReviewsByContentId(contentId, page).getContent();
+        return reviewService.getReviewsByContentId(contentId, page);
     }
 }
