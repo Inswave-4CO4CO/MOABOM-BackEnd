@@ -11,7 +11,11 @@ import java.util.List;
 @Table(name = "ott")
 public class Ott {
     @Id
-    private Integer ottId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "OTT_ID")
+    private Long ottId;
+
+    @Column(name = "OTT_NAME")
     private String ottName;
 
     @OneToMany(mappedBy = "ott")
