@@ -11,7 +11,10 @@ import java.util.List;
 @Table(name = "ott")
 public class Ott {
     @Id
+    @Column(name = "OTT_ID")
     private Integer ottId;
+
+    @Column(name = "OTT_NAME")
     private String ottName;
 
     @OneToMany(mappedBy = "ott")

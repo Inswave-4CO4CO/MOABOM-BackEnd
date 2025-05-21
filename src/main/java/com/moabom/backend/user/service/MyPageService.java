@@ -1,9 +1,6 @@
 package com.moabom.backend.user.service;
 
-import com.moabom.backend.user.model.MyReviewDTO;
-import com.moabom.backend.user.model.MyStatsDTO;
-import com.moabom.backend.user.model.MyWatchDTO;
-import com.moabom.backend.user.model.MyPagedResultDTO;
+import com.moabom.backend.user.model.*;
 import com.moabom.backend.user.repository.MyPageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,4 +39,10 @@ public class MyPageService {
     public MyPagedResultDTO<MyReviewDTO> getReviewList(String userId, int page) {
         return watchRepository.getReviewByUserId(userId, page, 5);
     }
+
+    //보는중 + 보고싶다 총 개수
+    public MyWatchCountDTO getWatchCount(String userId) {
+        return watchRepository.getWatchCount(userId);
+    }
+
 }

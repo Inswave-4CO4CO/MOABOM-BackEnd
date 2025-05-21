@@ -4,6 +4,7 @@ import com.moabom.backend.auth.util.JwtUtil;
 import com.moabom.backend.review.model.ReviewEntity;
 import com.moabom.backend.content.service.ContentService;
 import com.moabom.backend.review.service.ReviewService;
+import com.moabom.backend.user.exception.MyPageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,15 @@ public class ContentController {
     private final ReviewService reviewService;
     private final JwtUtil jwtUtil;
 
+    private String extractUserIdOrThrow(String token) {
+        String realToken = token.startsWith("Bearer ") ? token.substring(7).trim() : token.trim();
+        if (realToken.isEmpty()) {
+            throw new MyPageException("유효하지 않은 사용자 토큰입니다.");
+        }
+        return jwtUtil.extractUserId(realToken);
+    }
+
+
     @Autowired
     public ContentController(ContentService contentService, ReviewService reviewService, JwtUtil jwtUtil) {
         this.contentService = contentService;
@@ -30,9 +40,8 @@ public class ContentController {
             @PathVariable("contentId") int contentId,
             @RequestHeader(value = "Authorization", defaultValue = "") String userIdAuth) {
 
-        String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
 
-        String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
+        String userId = extractUserIdOrThrow(userIdAuth);
 
         Map<String, Object> contentDetailMap = new HashMap<>();
         contentDetailMap = contentService.getContentById(contentId, userId);

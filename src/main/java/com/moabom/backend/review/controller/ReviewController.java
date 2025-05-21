@@ -3,6 +3,7 @@ package com.moabom.backend.review.controller;
 import com.moabom.backend.auth.util.JwtUtil;
 import com.moabom.backend.review.model.ReviewEntity;
 import com.moabom.backend.review.service.ReviewService;
+import com.moabom.backend.user.exception.MyPageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus; // HttpStatus 임포트 (필요 없을 수도 있지만 혹시 모르니 남겨둠)
 import org.springframework.http.ResponseEntity; // ResponseEntity 임포트
@@ -20,12 +21,20 @@ public class ReviewController {
         this.jwtUtil = jwtUtil;
     }
 
+    //토큰 리턴하는 거
+    private String extractUserIdOrThrow(String token) {
+        String realToken = token.startsWith("Bearer ") ? token.substring(7).trim() : token.trim();
+        if (realToken.isEmpty()) {
+            throw new MyPageException("유효하지 않은 사용자 토큰입니다.");
+        }
+        return jwtUtil.extractUserId(realToken);
+    }
+
 
     //한줄평 추가
     @PostMapping
     public ResponseEntity<ReviewEntity> insert(@RequestBody ReviewEntity review,  @RequestHeader(value = "Authorization", defaultValue = "defaultHeaderValue") String userIdAuth) {
-        String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
-        String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
+        String userId = extractUserIdOrThrow(userIdAuth);
 
         review.setUserId(userId);
 
@@ -46,8 +55,7 @@ public class ReviewController {
             @RequestParam(value = "contentId", defaultValue = "") int contentId,
             @RequestHeader(value = "Authorization", defaultValue = "defaultHeaderValue") String userIdAuth) {
 
-        String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
-        String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
+        String userId = extractUserIdOrThrow(userIdAuth);
 
         ReviewEntity review = reviewService.findByContentIdAndUserId(contentId, userId);
 
@@ -61,8 +69,7 @@ public class ReviewController {
     //한줄평 수정
     @PutMapping
     public ResponseEntity<ReviewEntity> update(@RequestBody ReviewEntity review, @RequestHeader(value = "Authorization", defaultValue = "defaultHeaderValue") String userIdAuth) {
-        String token = userIdAuth.startsWith("Bearer ") ? userIdAuth.substring(7).trim() : userIdAuth.trim();
-        String userId = token.isEmpty() || token=="" ? "" : jwtUtil.extractUserId(token);
+        String userId = extractUserIdOrThrow(userIdAuth);
 
         review.setUserId(userId);
         ReviewEntity updatedReview = reviewService.update(review);

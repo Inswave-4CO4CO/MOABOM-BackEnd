@@ -1,9 +1,6 @@
 package com.moabom.backend.user.repository;
 
-import com.moabom.backend.user.model.MyReviewDTO;
-import com.moabom.backend.user.model.MyStatsDTO;
-import com.moabom.backend.user.model.MyWatchDTO;
-import com.moabom.backend.user.model.MyPagedResultDTO;
+import com.moabom.backend.user.model.*;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Repository;
 
@@ -124,5 +121,15 @@ public class MyPageRepository {
 
         return result;
     }
+
+
+    //봤다 + 보는중 전체 개수 리턴
+    public MyWatchCountDTO getWatchCount(String userId) {
+        return (MyWatchCountDTO) em.createNativeQuery(
+                        "CALL get_watch_count_by_user(:userId)", "MyWatchCountDTOMapping")
+                .setParameter("userId", userId)
+                .getSingleResult();
+    }
+
 
 }
