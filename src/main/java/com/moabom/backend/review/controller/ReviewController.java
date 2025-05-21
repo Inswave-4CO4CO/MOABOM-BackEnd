@@ -7,6 +7,8 @@ import com.moabom.backend.user.exception.MyPageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus; // HttpStatus 임포트 (필요 없을 수도 있지만 혹시 모르니 남겨둠)
 import org.springframework.http.ResponseEntity; // ResponseEntity 임포트
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,22 +23,10 @@ public class ReviewController {
         this.jwtUtil = jwtUtil;
     }
 
-    //토큰 리턴하는 거
-    private String extractUserIdOrThrow(String token) {
-        String realToken = token.startsWith("Bearer ") ? token.substring(7).trim() : token.trim();
-        if (realToken.isEmpty()) {
-            throw new MyPageException("유효하지 않은 사용자 토큰입니다.");
-        }
-        return jwtUtil.extractUserId(realToken);
-    }
-
-
     //한줄평 추가
     @PostMapping
-    public ResponseEntity<ReviewEntity> insert(@RequestBody ReviewEntity review,  @RequestHeader(value = "Authorization", defaultValue = "defaultHeaderValue") String userIdAuth) {
-        String userId = extractUserIdOrThrow(userIdAuth);
-
-        review.setUserId(userId);
+    public ResponseEntity<ReviewEntity> insert(@RequestBody ReviewEntity review, @AuthenticationPrincipal UserDetails userDetails) {
+        review.setUserId(userDetails.getUsername());
 
         ReviewEntity savedReview = reviewService.insert(review);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedReview);
@@ -53,11 +43,8 @@ public class ReviewController {
     @GetMapping
     public ResponseEntity<?> findByContentIdAndUserId (
             @RequestParam(value = "contentId", defaultValue = "") int contentId,
-            @RequestHeader(value = "Authorization", defaultValue = "defaultHeaderValue") String userIdAuth) {
-
-        String userId = extractUserIdOrThrow(userIdAuth);
-
-        ReviewEntity review = reviewService.findByContentIdAndUserId(contentId, userId);
+            @AuthenticationPrincipal UserDetails userDetails) {
+        ReviewEntity review = reviewService.findByContentIdAndUserId(contentId, userDetails.getUsername());
 
         if (review == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("[한줄평 찾기] 해당 한줄평이 없습니다");
@@ -68,10 +55,8 @@ public class ReviewController {
 
     //한줄평 수정
     @PutMapping
-    public ResponseEntity<ReviewEntity> update(@RequestBody ReviewEntity review, @RequestHeader(value = "Authorization", defaultValue = "defaultHeaderValue") String userIdAuth) {
-        String userId = extractUserIdOrThrow(userIdAuth);
-
-        review.setUserId(userId);
+    public ResponseEntity<ReviewEntity> update(@RequestBody ReviewEntity review, @AuthenticationPrincipal UserDetails userDetails) {
+        review.setUserId(userDetails.getUsername());
         ReviewEntity updatedReview = reviewService.update(review);
 
         return ResponseEntity.ok(updatedReview);
