@@ -3,6 +3,7 @@ package com.moabom.backend.auth.service;
 import com.moabom.backend.auth.constants.SecurityConstants;
 import com.moabom.backend.auth.util.JwtUtil;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +33,17 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // refreshToken DB 저장
         refreshTokenService.save(email, refreshToken, SecurityConstants.REFRESH_TOKEN_EXPIRE);
 
+        Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
+        refreshCookie.setHttpOnly(true); // JS에서 접근 불가
+        refreshCookie.setSecure(false);   // HTTPS에서만 전송 (개발환경이면 false도 가능)
+        refreshCookie.setPath("/");  // 전체 경로에 대해 쿠키 전송
+        refreshCookie.setMaxAge((int) SecurityConstants.REFRESH_TOKEN_EXPIRE); // 만료 기간(초 단위)
+
+        response.addCookie(refreshCookie);
+
         // 프론트엔드로 리다이렉트 (토큰 쿼리스트링 전달)
         String redirectUrl = "http://localhost:5173/oauth2/redirect"
-                + "?accessToken=" + accessToken
-                + "&refreshToken=" + refreshToken;
+                + "?accessToken=" + accessToken;
 
         response.sendRedirect(redirectUrl);
     }
