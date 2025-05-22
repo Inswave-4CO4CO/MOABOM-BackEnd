@@ -8,6 +8,6 @@ public final class SecurityConstants {
     public static final String TOKEN_PREFIX="Bearer "; //Bearer공백${jwt}
 
     // 1분
-    public static final long ACCESS_TOKEN_EXPIRE = 60 * 1 * 1000;
-    public static final long REFRESH_TOKEN_EXPIRE = 60 * 60 * 24 * 14;
+    public static final long ACCESS_TOKEN_EXPIRE = 1000 * 60 * 10000;
+    public static final long REFRESH_TOKEN_EXPIRE = 1000 * 60 * 60 * 24 * 14;
 }

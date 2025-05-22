@@ -11,9 +11,8 @@ import java.util.List;
 @Table(name = "ott")
 public class Ott {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "OTT_ID")
-    private Long ottId;
+    private Integer ottId;
 
     @Column(name = "OTT_NAME")
     private String ottName;
