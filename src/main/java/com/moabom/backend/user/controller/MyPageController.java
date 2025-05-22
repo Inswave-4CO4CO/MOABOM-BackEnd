@@ -10,6 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -26,14 +27,22 @@ public class MyPageController {
 
     //보는중 리스트(5개씩)
     @GetMapping("/watching")
-    public MyPagedResultDTO<MyWatchDTO> getWatchingList(@AuthenticationPrincipal UserDetails userDetails, @RequestBody MyOttDTO ottList){
-        return MyPageService.getWatchContentList(userDetails.getUsername(), ottList.getOttNames(), "ING", ottList.getPage());
+    public MyPagedResultDTO<MyWatchDTO> getWatchingList(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(value = "ottNames", defaultValue = "") List<String> ottNames,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        return MyPageService.getWatchContentList(
+                userDetails.getUsername(), ottNames, "ING", page);
     }
 
     //봤다 리스트(5개씩)
     @GetMapping("/watched")
-    public MyPagedResultDTO<MyWatchDTO> getWatchedList(@AuthenticationPrincipal UserDetails userDetails, @RequestBody MyOttDTO ottList){
-        return MyPageService.getWatchContentList(userDetails.getUsername(), ottList.getOttNames(), "ED", ottList.getPage());
+    public MyPagedResultDTO<MyWatchDTO> getWatchedList(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam(value = "ottNames", defaultValue = "") List<String> ottNames,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        return MyPageService.getWatchContentList(
+                userDetails.getUsername(), ottNames, "ED", page);
     }
 
     //장르별 시청통계
