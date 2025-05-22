@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SearchResultDto {
     private List<SearchContentDto> content;
-    private List<SearchPersonDto>  person;
+    private List<SearchPersonDto> cast;
+    private List<SearchPersonDto> crew;
     private List<String> allGenres;
     private List<String> allCategories;
     private boolean hasNext;

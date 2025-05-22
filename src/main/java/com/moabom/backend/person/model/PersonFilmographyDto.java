@@ -1,5 +1,7 @@
 package com.moabom.backend.person.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +19,5 @@ public class PersonFilmographyDto {
     private String role; // CastRole 또는 CrewRole의 문자열 값
     private String poster;
     private Integer releaseYear;
+    private List<OttDto> otts;
 } 
