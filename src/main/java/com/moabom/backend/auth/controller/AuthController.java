@@ -36,13 +36,8 @@ public class AuthController {
     // 로그인
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request, HttpServletResponse response) {
-        try {
-            Map<String, String> tokens = authService.login(request, response);
-            return ResponseEntity.ok(tokens);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "아이디 또는 비밀번호가 일치하지 않습니다."));
-        }
+        Map<String, String> tokens = authService.login(request, response);
+        return ResponseEntity.ok(tokens);
     }
 
     // 로그아웃

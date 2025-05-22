@@ -26,6 +26,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
+		String uri = request.getRequestURI();
+		if (uri.startsWith("/uploads/")) {
+			filterChain.doFilter(request, response);
+			System.out.println(uri);
+			return;
+		}
+
 		String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
 
 		if (header == null || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
