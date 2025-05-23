@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.moabom.backend.search.model.SearchContentDto;
+import com.moabom.backend.search.model.SearchPersonDto;
 import com.moabom.backend.search.model.SearchRequestDto;
 import com.moabom.backend.search.model.SearchResultDto;
 import com.moabom.backend.search.service.SearchService;
@@ -26,11 +27,19 @@ public class SearchPageController {
     @GetMapping
     public Object search(@ModelAttribute SearchRequestDto req) {
         Pageable pg = PageRequest.of(req.getPage(), req.getSize());
+        SearchResultDto resp = new SearchResultDto();
+        
         switch (req.getType()) {
             case "cast":
-                return searchService.searchCastByName(req.getKeyword(), pg);
+                Page<SearchPersonDto> castPage = searchService.searchCastByName(req.getKeyword(), pg);
+                resp.setCast(castPage.getContent());
+                resp.setHasNext(castPage.hasNext());
+                return resp;
             case "crew":
-                return searchService.searchCrewByName(req.getKeyword(), pg);
+                Page<SearchPersonDto> crewPage = searchService.searchCrewByName(req.getKeyword(), pg);
+                resp.setCrew(crewPage.getContent());
+                resp.setHasNext(crewPage.hasNext());
+                return resp;
 
             default:
                 Sort sortObj = switch (req.getSort()) {
@@ -50,7 +59,7 @@ public class SearchPageController {
                     && req.getAfterRating() == null
                     && req.getAfterDate()   == null
                     && req.getAfterId()     == null;
-                SearchResultDto resp = new SearchResultDto();
+                
                 resp.setContent(page.getContent());
                 resp.setHasNext(page.hasNext());
                 if (isFirst) {
