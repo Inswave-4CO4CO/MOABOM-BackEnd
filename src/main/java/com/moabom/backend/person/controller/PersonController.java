@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/person")
 public class PersonController {
 
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 8;
 
     @Autowired
     private PersonService personService;
@@ -66,6 +66,7 @@ public class PersonController {
         // 페이지네이션을 위한 분리
         Map<String, List<Map<String, Object>>> filmographyByRole = new HashMap<>();
         Map<String, Boolean> hasMoreByRole = new HashMap<>();
+        Map<String, Integer> totalCountsByRole = new HashMap<>();
         
         // 배우로서 참여한 작품 - category와 releaseYear 필드를 제외
         List<PersonFilmographyDto> actorFilmography = allFilmography.stream()
@@ -74,35 +75,28 @@ public class PersonController {
         
         List<Map<String, Object>> paginatedActorFilmography = paginateFilmography(actorFilmography, page);
         boolean hasMoreActors = actorFilmography.size() > (page + 1) * PAGE_SIZE;
+        totalCountsByRole.put("actor", actorFilmography.size());
         
-        // 감독으로서 참여한 작품 - category와 releaseYear 필드를 제외
+        // 감독으로서 참여한 작품 - category와 releaseYear 필드를 제외 (작가 포함)
         List<PersonFilmographyDto> directorFilmography = allFilmography.stream()
-                .filter(f -> "crew".equals(f.getRoleType()) && "DIR".equals(f.getRole()))
+                .filter(f -> "crew".equals(f.getRoleType()) && ("DIR".equals(f.getRole()) || "WRI".equals(f.getRole()))) // 작가 역할(WRI) 추가
                 .collect(Collectors.toList());
         
         List<Map<String, Object>> paginatedDirectorFilmography = paginateFilmography(directorFilmography, page);
         boolean hasMoreDirectors = directorFilmography.size() > (page + 1) * PAGE_SIZE;
-        
-        // 작가로서 참여한 작품 - category와 releaseYear 필드를 제외
-        List<PersonFilmographyDto> writerFilmography = allFilmography.stream()
-                .filter(f -> "crew".equals(f.getRoleType()) && "WRI".equals(f.getRole()))
-                .collect(Collectors.toList());
-        
-        List<Map<String, Object>> paginatedWriterFilmography = paginateFilmography(writerFilmography, page);
-        boolean hasMoreWriters = writerFilmography.size() > (page + 1) * PAGE_SIZE;
+        totalCountsByRole.put("director", directorFilmography.size()); // 감독 전체 작품 수 추가 (작가 포함)
         
         // 결과 설정
         filmographyByRole.put("actor", paginatedActorFilmography);
         filmographyByRole.put("director", paginatedDirectorFilmography);
-        filmographyByRole.put("writer", paginatedWriterFilmography);
         
         hasMoreByRole.put("actor", hasMoreActors);
         hasMoreByRole.put("director", hasMoreDirectors);
-        hasMoreByRole.put("writer", hasMoreWriters);
         
         response.put("filmography", filmographyByRole);
         response.put("hasMore", hasMoreByRole);
         response.put("currentPage", page);
+        response.put("totalCounts", totalCountsByRole); // 전체 개수 정보 추가 (작가 부분은 감독에 통합됨)
         
         return ResponseEntity.ok(response);
     }
