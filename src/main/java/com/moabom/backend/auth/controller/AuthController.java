@@ -2,11 +2,12 @@ package com.moabom.backend.auth.controller;
 
 import com.moabom.backend.auth.model.LoginRequest;
 import com.moabom.backend.auth.model.SignupRequest;
-import com.moabom.backend.auth.model.UserEntity;
 import com.moabom.backend.auth.repository.AuthRepository;
 
-
 import com.moabom.backend.auth.service.AuthUserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,55 +35,40 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
-        try {
-            Map<String, String> tokens = authService.login(request);
-            return ResponseEntity.ok(tokens);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "아이디 또는 비밀번호가 일치하지 않습니다."));
-        }
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request, HttpServletResponse response) {
+        Map<String, String> tokens = authService.login(request, response);
+        return ResponseEntity.ok(tokens);
     }
 
     // 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<String> logout(Authentication authentication) {
+    public ResponseEntity<String> logout(Authentication authentication, HttpServletResponse response) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
         }
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        authService.logout(userDetails.getUsername());
+        authService.logout(userDetails.getUsername(), response);
         return ResponseEntity.ok("로그아웃 성공");
     }
 
     // access token 재발급
     @PostMapping("/refresh")
-    public ResponseEntity<Map<String, String>> reissue(@RequestBody Map<String, String> body) {
-        String refreshToken = body.get("refreshToken");
+    public ResponseEntity<Map<String, String>> reissue(HttpServletRequest request) {
+        String refreshToken = null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("refreshToken".equals(cookie.getName())) {
+                    refreshToken = cookie.getValue();
+                    System.out.println(refreshToken);
+                    break;
+                }
+            }
+        }
         String newAccessToken = authService.reissueAccessToken(refreshToken);
         Map<String, String> response = new HashMap<>();
-        response.put("accessToken", newAccessToken);
-        return ResponseEntity.ok(response);
-    }
-
-    // 사용자 인증 (로그인한 유저인지)
-    @GetMapping("/check")
-    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
-        }
-
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        UserEntity user = userRepository.findByUserId(userDetails.getUsername()).orElse(null);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유저 정보 없음");
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("userId", user.getUserId());
-        response.put("nickName", user.getNickName());
-        response.put("userImage", user.getUserImage());
+        response.put("token", newAccessToken);
         return ResponseEntity.ok(response);
     }
 

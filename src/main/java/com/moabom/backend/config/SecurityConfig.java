@@ -49,8 +49,7 @@ public class SecurityConfig {
                                 "/oauth2/**",
                                 "/oauth2/authorization/**",
                                 "/login/oauth2/**",
-                                "/oauth2/redirect/**", "/content/**", "/search", "/person/**").permitAll()
-                        
+                                "/oauth2/redirect/**", "/content/**", "/search", "/review/**", "/uploads/**", "/person/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
