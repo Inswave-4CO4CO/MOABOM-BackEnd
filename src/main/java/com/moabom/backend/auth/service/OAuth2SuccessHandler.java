@@ -43,7 +43,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
         // 프론트엔드로 리다이렉트 (토큰 쿼리스트링 전달)
         String redirectUrl = "http://localhost:5173/oauth2/redirect"
-                + "?accessToken=" + accessToken;
+                + "?accessToken=" + accessToken+ "&email=" + email;
 
         response.sendRedirect(redirectUrl);
     }
