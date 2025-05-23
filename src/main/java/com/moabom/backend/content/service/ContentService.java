@@ -3,6 +3,7 @@ package com.moabom.backend.content.service;
 import com.moabom.backend.content.exception.ContentNotFoundException;
 import com.moabom.backend.content.model.*;
 import com.moabom.backend.content.repository.*;
+import com.moabom.backend.user.model.MyPagedResultDTO;
 import com.moabom.backend.watch.model.WatchEntity;
 import com.moabom.backend.watch.model.WatchId;
 import com.moabom.backend.watch.repository.WatchRepository;
@@ -22,6 +23,7 @@ public class ContentService {
     private final WatchRepository watchRepository;
     private final CastRepository castRepository;
     private final CrewRepository crewRepository;
+    private final ContentReviewRepository contentReviewRepository;
 
     @Autowired
     public ContentService(
@@ -30,13 +32,14 @@ public class ContentService {
             GenreRepository genreRepository,
             WatchRepository watchRepository,
             CastRepository castRepository,
-            CrewRepository crewRepository) {
+            CrewRepository crewRepository, ContentReviewRepository contentReviewRepository) {
         this.detailRepository = detailRepository;
         this.ottRepository = ottRepository;
         this.genreRepository = genreRepository;
         this.watchRepository = watchRepository;
         this.castRepository = castRepository;
         this.crewRepository = crewRepository;
+        this.contentReviewRepository = contentReviewRepository;
     }
 
     //작품 가져오기
@@ -80,5 +83,10 @@ public class ContentService {
         }
 
         return contentDetailMap;
+    }
+
+    //한줄평 가져오기
+    public MyPagedResultDTO<ContentReviewDTO> getReviewByContentId(int contentId, int page){
+        return contentReviewRepository.getReviewByContentId(contentId, page, 8);
     }
 }
