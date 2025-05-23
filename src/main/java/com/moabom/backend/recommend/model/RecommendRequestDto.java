@@ -11,4 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RecommendRequestDto {
     private List<RecommendContentDto> contents;
+    
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Content {
+    	private Long contentId;
+    	private String title;
+    	private String poster;
+    }
 }

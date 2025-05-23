@@ -9,4 +9,5 @@ public class RecommendContentDto {
     private Long contentId;
     private String title;
     private String poster;
+    private String ottName;
 }

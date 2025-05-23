@@ -3,8 +3,7 @@ package com.moabom.backend.wishlist.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
-import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
