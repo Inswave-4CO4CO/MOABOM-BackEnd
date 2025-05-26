@@ -72,7 +72,6 @@ public class AuthController {
             response.put("token", newAccessToken);
             return ResponseEntity.ok(response);
         } catch (ExpiredJwtException e) {
-            // JWT 라이브러리에 따라 예외 이름이 다를 수 있습니다.
             Map<String, String> error = new HashMap<>();
             error.put("message", "refresh token expired");
             return ResponseEntity.status(401).body(error);

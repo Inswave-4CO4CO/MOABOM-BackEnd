@@ -37,7 +37,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         refreshCookie.setHttpOnly(true); // JS에서 접근 불가
         refreshCookie.setSecure(false);   // HTTPS에서만 전송 (개발환경이면 false도 가능)
         refreshCookie.setPath("/");  // 전체 경로에 대해 쿠키 전송
-        refreshCookie.setMaxAge((int) SecurityConstants.REFRESH_TOKEN_EXPIRE); // 만료 기간(초 단위)
+        refreshCookie.setMaxAge((int) SecurityConstants.REFRESH_TOKEN_EXPIRE); // 만료 기간
 
         response.addCookie(refreshCookie);
 
