@@ -5,6 +5,7 @@ import com.moabom.backend.auth.model.SignupRequest;
 import com.moabom.backend.auth.repository.AuthRepository;
 
 import com.moabom.backend.auth.service.AuthUserService;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -61,16 +62,27 @@ public class AuthController {
             for (Cookie cookie : cookies) {
                 if ("refreshToken".equals(cookie.getName())) {
                     refreshToken = cookie.getValue();
-                    System.out.println(refreshToken);
                     break;
                 }
             }
         }
-        String newAccessToken = authService.reissueAccessToken(refreshToken);
-        Map<String, String> response = new HashMap<>();
-        response.put("token", newAccessToken);
-        return ResponseEntity.ok(response);
+        try {
+            String newAccessToken = authService.reissueAccessToken(refreshToken);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", newAccessToken);
+            return ResponseEntity.ok(response);
+        } catch (ExpiredJwtException e) {
+            // JWT 라이브러리에 따라 예외 이름이 다를 수 있습니다.
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "refresh token expired");
+            return ResponseEntity.status(401).body(error);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "invalid refresh token");
+            return ResponseEntity.status(401).body(error);
+        }
     }
+
 
     // 아이디 중복 확인
     @PostMapping("/checkId")
