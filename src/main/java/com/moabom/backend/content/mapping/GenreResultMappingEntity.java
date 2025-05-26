@@ -9,6 +9,7 @@ import jakarta.persistence.*;
                 targetClass = GenreDTO.class,
                 columns = {
                         @ColumnResult(name = "GENRE_NAME", type = String.class),
+                        @ColumnResult(name = "GENRE_ID", type = Integer.class),
                 }
         )
 )

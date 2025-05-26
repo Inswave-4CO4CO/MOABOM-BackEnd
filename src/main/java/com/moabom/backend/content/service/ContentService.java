@@ -67,7 +67,7 @@ public class ContentService {
         List<String> genreNames = genreList.stream()
                 .map(GenreDTO::getGenreName)
                 .toList();
-        contentDetailMap.put("genre", genreNames);
+        contentDetailMap.put("genre", genreList);
 
         //시청 상태(type)
         if (userId != null && !userId.isEmpty()) {
