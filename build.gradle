@@ -54,7 +54,9 @@ dependencies {
 
 	// 구글 로그인
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-
+	
+	// AWS SDK for S3
+	implementation 'software.amazon.awssdk:s3:2.31.50'
 
 }
 
