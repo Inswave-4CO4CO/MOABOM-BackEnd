@@ -2,6 +2,7 @@ package com.moabom.backend.watch.controller;
 
 import com.moabom.backend.auth.util.JwtUtil;
 import com.moabom.backend.user.exception.MyPageException;
+import com.moabom.backend.watch.model.WatchDTO;
 import com.moabom.backend.watch.model.WatchEntity;
 import com.moabom.backend.watch.model.WatchId;
 import com.moabom.backend.watch.service.WatchService;
@@ -24,27 +25,34 @@ public class WatchController {
 
     //시청상태(보고싶다, 보는중, 봤다) 추가
     @PostMapping
-    public ResponseEntity<WatchEntity> insert(@RequestBody WatchEntity watchEntity, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<WatchEntity> insert(@RequestBody WatchDTO watchDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        //시청상태 엔티티
+        WatchEntity watchEntity = new WatchEntity();
         watchEntity.setUserId(userDetails.getUsername());
+        watchEntity.setContentId(watchDTO.getContentId());
+        watchEntity.setType(watchDTO.getType());
+        watchDTO.setUserId(userDetails.getUsername());
 
-        WatchEntity savedWatch = watchService.insert(watchEntity);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedWatch);
+        watchService.insert(watchDTO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(watchEntity);
     }
 
     //시청상태(보고싶다, 보는중, 봤다) 수정
     @PutMapping
-    public ResponseEntity<WatchEntity> update(@RequestBody WatchEntity watchEntity, @AuthenticationPrincipal UserDetails userDetails) {
-        watchEntity.setUserId(userDetails.getUsername());
+    public ResponseEntity<WatchEntity> update(@RequestBody WatchDTO watchDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        watchDTO.setUserId(userDetails.getUsername());
 
-        WatchEntity updatedWatch = watchService.update(watchEntity);
+        WatchEntity updatedWatch = watchService.update(watchDTO);
         return ResponseEntity.ok(updatedWatch);
     }
 
     //시청상태(보고싶다, 보는중, 봤다) 삭제
-    @DeleteMapping("/{contentId}")
-    public ResponseEntity<String> delete(@PathVariable("contentId") int contentId, @AuthenticationPrincipal UserDetails userDetails) {
-        WatchId watchId = new WatchId(userDetails.getUsername(), contentId);
-        watchService.delete(watchId);
+    @DeleteMapping
+    public ResponseEntity<String> delete(@RequestBody WatchDTO watchDTO, @AuthenticationPrincipal UserDetails userDetails) {
+        System.out.println(userDetails.getUsername());
+        watchDTO.setUserId(userDetails.getUsername());
+        watchService.delete(watchDTO);
 
         return ResponseEntity.ok().body("[시청상태 삭제] 해당 시청상태가 삭제되었습니다 ");
     }
