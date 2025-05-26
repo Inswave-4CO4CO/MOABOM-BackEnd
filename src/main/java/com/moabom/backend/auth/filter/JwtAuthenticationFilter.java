@@ -24,39 +24,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+	        throws ServletException, IOException {
 
-		String uri = request.getRequestURI();
-		if (uri.startsWith("/uploads/")) {
-			filterChain.doFilter(request, response);
-			System.out.println(uri);
-			return;
-		}
+	    // 더 이상 /uploads/ 경로는 웹서버가 직접 처리 안 하니까
+	    // 예외처리 코드 삭제
 
-		String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
+	    String header = request.getHeader(SecurityConstants.TOKEN_HEADER);
 
-		if (header == null || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
-			filterChain.doFilter(request, response);
-			return;
-		}
+	    if (header == null || !header.startsWith(SecurityConstants.TOKEN_PREFIX)) {
+	        filterChain.doFilter(request, response);
+	        return;
+	    }
 
-		String token = header.substring(SecurityConstants.TOKEN_PREFIX.length());
+	    String token = header.substring(SecurityConstants.TOKEN_PREFIX.length());
 
-		// 이후 JWT 검증 및 인증 처리
-		String username = jwtUtil.extractUserId(token);
+	    String username = jwtUtil.extractUserId(token);
 
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+	    if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+	        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-			if (jwtUtil.validateToken(token, userDetails)) {
-				UsernamePasswordAuthenticationToken authentication =
-						new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-			}
-		}
+	        if (jwtUtil.validateToken(token, userDetails)) {
+	            UsernamePasswordAuthenticationToken authentication =
+	                    new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+	            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+	            SecurityContextHolder.getContext().setAuthentication(authentication);
+	        }
+	    }
 
-		filterChain.doFilter(request, response);
+	    filterChain.doFilter(request, response);
 	}
+
 }
 
