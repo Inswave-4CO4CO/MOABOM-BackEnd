@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
                         @ColumnResult(name = "RATING", type = Float.class),
                         @ColumnResult(name = "CONTENT_ID", type = Integer.class),
                         @ColumnResult(name = "USER_ID", type = String.class),
-                        @ColumnResult(name = "NICK_NAME", type = String.class),
+                        @ColumnResult(name = "NICKNAME", type = String.class),
                         @ColumnResult(name = "USER_IMAGE", type = String.class)
                 }
         )
