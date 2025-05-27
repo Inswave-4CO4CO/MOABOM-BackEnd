@@ -37,7 +37,15 @@ public class ContentSpec {
     }
     
     public static Specification<SearchContent> categoryIn(Collection<String> categories) {
-        return (root, query, cb) ->
-            root.get("category").in(categories);
+        return (root, query, cb) -> {
+            if (categories == null || categories.isEmpty()) {
+                return cb.conjunction(); // 조건이 없으면 항상 true
+            }
+            return cb.or(
+                categories.stream()
+                    .map(category -> cb.like(root.get("category"), "%" + category + "%"))
+                    .toArray(jakarta.persistence.criteria.Predicate[]::new)
+            );
+        };
     }
 }
