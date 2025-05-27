@@ -46,6 +46,9 @@ Thumbs.db
 # 환경변수 파일
 .env
 
+# ignore generated secrets file
+src/main/resources/.env.properties
+
 # === 기타 ===
 HELP.md
 
