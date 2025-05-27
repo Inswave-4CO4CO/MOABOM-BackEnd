@@ -62,4 +62,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	
+	// GitHub Actions에서 전달되는 JWT_SECRET 환경변수를 테스트 실행 시 전달
+	if (System.getenv("JWT_SECRET") != null) {
+		systemProperty "JWT_SECRET", System.getenv("JWT_SECRET")
+	}
 }
