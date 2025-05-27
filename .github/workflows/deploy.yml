@@ -24,6 +24,8 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
 
       - name: Copy SSH key
         run: |
