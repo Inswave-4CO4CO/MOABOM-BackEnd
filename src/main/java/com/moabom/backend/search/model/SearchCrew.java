@@ -34,6 +34,6 @@ public class SearchCrew {
     private SearchPersonInfo person;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "enum('DIR','WRI')")
+    @Column(name = "ROLE", nullable = false, columnDefinition = "enum('DIR','WRI')")
     private SearchRole searchRole;
 }

@@ -34,6 +34,6 @@ public class SearchCast {
     private SearchPersonInfo person;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "enum('MAIN','SUB')")
+    @Column(name = "ROLE", nullable = false, columnDefinition = "enum('MAIN','SUB')")
     private SearchRole searchRole;
 }
