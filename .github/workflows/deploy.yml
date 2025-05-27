@@ -3,7 +3,7 @@ name: Deploy Spring Boot to EC2
 on:
   push:
     branches:
-      - main # 또는 배포 브랜치
+      - main
 
 jobs:
   deploy:
@@ -22,10 +22,10 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew build
-        env:
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      - name: Build with Gradle (with JWT_SECRET)
+        run: |
+          export JWT_SECRET=${{ secrets.JWT_SECRET }}
+          ./gradlew build
 
       - name: Copy SSH key
         run: |
