@@ -2,6 +2,8 @@
 package com.moabom.backend.search.service;
 
 import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -100,6 +102,10 @@ public class SearchService {
     }
     
     public List<String> getAllCategories() {
-        return searchRepository.findDistinctCategories();
+        return searchRepository.findDistinctCategories().stream()
+            .flatMap(category -> Arrays.stream(category.split(",")))
+            .map(String::trim)
+            .distinct()
+            .collect(Collectors.toList());
     }
 }
