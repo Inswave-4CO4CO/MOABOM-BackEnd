@@ -35,7 +35,9 @@ public class ContentController {
             @PathVariable("contentId") int contentId,
             @AuthenticationPrincipal UserDetails userDetails) {
 
-        return contentService.getContentById(contentId, userDetails.getUsername());
+        String username = (userDetails != null) ? userDetails.getUsername() : null;
+
+        return contentService.getContentById(contentId, username);
     }
 
     //한줄평 컨텐츠 별로 가져오기(8개씩)
