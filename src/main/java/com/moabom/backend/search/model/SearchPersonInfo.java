@@ -28,7 +28,7 @@ public class SearchPersonInfo {
     @Column(name = "PERSON_ID")
     private Long personId;
 
-    @Column(name = "PERSON_NAME", unique = true, nullable = false, length = 20)
+    @Column(name = "PERSON_NAME", nullable = false, length = 20)
     private String personName;
 
     @Column(name = "IMAGE", length = 2000)
