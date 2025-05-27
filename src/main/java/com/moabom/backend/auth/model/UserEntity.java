@@ -1,5 +1,6 @@
 package com.moabom.backend.auth.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -22,12 +23,18 @@ import java.util.List;
 @Table(name="User")
 public class UserEntity implements UserDetails {
     @Id
+    @Column(name = "USER_ID")
     private String userId;
 
+    @Column(name = "PASSWORD")
     private String password;
+    @Column(name = "NICKNAME")
     private String nickName;
+    @Column(name = "ROLE")
     private String role;
+    @Column(name = "ENABLED")
     private int enabled;
+    @Column(name = "USER_IMAGE")
     private String userImage;
 
     @Override
