@@ -61,8 +61,7 @@ jobs:
 
       - name: Upload JAR to EC2
         run: |
-		  scp -o StrictHostKeyChecking=no build/libs/moabom-backend-0.0.1-SNAPSHOT.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/app.jar
-
+          scp -o StrictHostKeyChecking=no build/libs/*.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/app.jar
 
       - name: Start application on EC2
         run: |
