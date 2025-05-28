@@ -61,7 +61,7 @@ jobs:
 
       - name: Upload JAR to EC2
         run: |
-          scp -o StrictHostKeyChecking=no build/libs/*.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/app.jar
+          scp -o StrictHostKeyChecking=no build/libs/*.jar ec2-user@${{ secrets.EC2_HOST }}:/home/ec2-user/
 
       - name: Start application on EC2
         run: |
