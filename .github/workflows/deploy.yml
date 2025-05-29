@@ -64,5 +64,3 @@ jobs:
             nohup java -jar /home/ec2-user/app.jar > app.log 2>&1 &
             echo "Application started."
           EOF
-
-		  
