@@ -15,7 +15,7 @@ public class CorsConfig {
     @Primary
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://172.31.6.144:5173","http://13.238.159.228:5173","https://moabom-profile-imgs.s3.ap-southeast-2.amazonaws.com" ));
+        configuration.setAllowedOrigins(List.of("http://172.31.6.144:5173","http://13.238.159.228:5173","https://moabom-profile-imgs.s3.ap-southeast-2.amazonaws.com", "http://localhost:5173" ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
