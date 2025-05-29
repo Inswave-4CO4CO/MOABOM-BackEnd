@@ -57,13 +57,10 @@ public class AuthUserService {
         String refreshToken = jwtUtil.generateRefreshToken(user.getUserId());
         refreshTokenService.save(user.getUserId(), refreshToken, SecurityConstants.REFRESH_TOKEN_EXPIRE);
 
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false); // HTTPS 환경에서만.. (일단 false)
-        cookie.setPath("/");
-        cookie.setMaxAge((int) SecurityConstants.REFRESH_TOKEN_EXPIRE);
+        String cookieValue = "refreshToken=" + refreshToken +
+                "; Path=/; HttpOnly; Secure; SameSite=None; Max-Age=" + SecurityConstants.REFRESH_TOKEN_EXPIRE;
 
-        response.addCookie(cookie);
+        response.addHeader("Set-Cookie", cookieValue);
 
         Map<String, String> tokens = new HashMap<>();
         tokens.put("accessToken", accessToken);
