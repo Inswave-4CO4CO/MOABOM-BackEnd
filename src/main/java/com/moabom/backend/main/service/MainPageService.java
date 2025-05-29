@@ -71,7 +71,7 @@ public class MainPageService {
 
         // end
         List<MainContentDto> endingSoon = endOttRepository
-        	    .findTop50ByEndDateAfterOrderByEndDateAsc(LocalDate.now()) // 100개 정도 넉넉히 뽑고
+        	    .findTop50ByEndDateAfterOrderByEndDateAsc(LocalDate.now()) // 50개 정도 넉넉히 뽑고
         	    .stream()
         	    .filter(eo -> eo.getContent() != null && eo.getOtt() != null && eo.getOtt().getOttName() != null)
         	    .collect(Collectors.toMap(

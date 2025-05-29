@@ -63,7 +63,7 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
     
-    ["SPRING_DATASOURCE_URL", "SPRING_DATASOURCE_USERNAME", "SPRING_DATASOURCE_PASSWORD",
+    /*["SPRING_DATASOURCE_URL", "SPRING_DATASOURCE_USERNAME", "SPRING_DATASOURCE_PASSWORD",
      "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_ID",
      "SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_CLIENT_SECRET",
      "JWT_SECRET", "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION", "AWS_S3_BUCKET"
@@ -71,6 +71,6 @@ tasks.named('test') {
         if (System.getenv(envVar) != null) {
             systemProperty envVar, System.getenv(envVar)
         }
-    }
+    }*/
 }
 
