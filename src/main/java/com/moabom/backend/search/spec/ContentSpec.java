@@ -10,7 +10,6 @@ import com.moabom.backend.search.model.SearchOtt;
 
 public class ContentSpec {
 
-    /** FULLTEXT MATCH ... AGAINST 사용 */
     public static Specification<SearchContent> titleContains(String keyword) {
         return (root, query, cb) -> {
             if (keyword == null || keyword.isBlank()) {
@@ -21,7 +20,7 @@ public class ContentSpec {
                 "match_against",      // 위에서 등록한 함수 이름
                 Double.class,
                 root.get("title"),    // 1번 인자 ?1
-                cb.literal(keyword+"*")   // 2번 인자 ?2
+                cb.literal(keyword)   // 2번 인자 ?2
             );
             return cb.greaterThan(relevance, cb.literal(0.0));
         };
